@@ -1,16 +1,17 @@
 package android.pvt.softtecotest.entity
 
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
 
-data class Address(
+open class Address:RealmObject(){
     @SerializedName("street")
-    val street: String,
+    open var street: String = ""
     @SerializedName("suite")
-    val suite: String,
+    open var suite: String = ""
     @SerializedName("city")
-    val city: String,
+    open var city: String = ""
     @SerializedName("zipcode")
-    val zipcode: String,
+    open var zipcode: String = ""
     @SerializedName("geo")
-    val geo: Geo
-)
+    open var geo: Geo? = null
+}

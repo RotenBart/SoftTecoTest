@@ -1,10 +1,11 @@
 package android.pvt.softtecotest.entity
 
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
 
-data class Geo(
+open class Geo: RealmObject() {
     @SerializedName("lat")
-    val latitude: String,
+    open var latitude: String = ""
     @SerializedName("lng")
-    val longitude: String
-)
+    open var longitude: String = ""
+}

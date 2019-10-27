@@ -1,21 +1,25 @@
 package android.pvt.softtecotest.entity
 
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
+import io.realm.annotations.Ignore
+import io.realm.annotations.PrimaryKey
 
 
-data class User(
+open class User : RealmObject() {
     @SerializedName("id")
-    val id: Int,
+    @PrimaryKey
+    open var id: Int = 0
     @SerializedName("name")
-    val name: String,
+    open var name: String = ""
     @SerializedName("username")
-    val username: String,
+    open var username: String = ""
     @SerializedName("email")
-    val email: String,
+    open var email: String = ""
     @SerializedName("address")
-    val address: Address,
+    open var address: Address? = null
     @SerializedName("phone")
-    val phone: String,
+    open var phone: String = ""
     @SerializedName("website")
-    val website: String
-)
+    @Ignore open var website: String = ""
+}
