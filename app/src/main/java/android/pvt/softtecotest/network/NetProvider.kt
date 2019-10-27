@@ -2,6 +2,7 @@ package android.pvt.softtecotest.network
 
 import android.pvt.softtecotest.BuildConfig
 import android.pvt.softtecotest.api.Api
+import android.pvt.softtecotest.api.ApiUsers
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -13,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object NetProvider {
 
     private var api: Api? = null
+    private var apiUsers: ApiUsers? = null
 
     fun provideGson(): Gson {
         return GsonBuilder().create()
@@ -46,5 +48,12 @@ object NetProvider {
             api = retrofit.create<Api>(Api::class.java)
         }
         return api!!
+    }
+
+    fun provideApiUsers(retrofit: Retrofit): ApiUsers {
+        if (apiUsers == null) {
+            apiUsers = retrofit.create<ApiUsers>(ApiUsers::class.java)
+        }
+        return apiUsers!!
     }
 }

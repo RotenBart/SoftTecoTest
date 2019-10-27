@@ -13,3 +13,15 @@ fun providePostRepository(): PostRepository {
         )
     )
 }
+
+fun provideUserRepository(): UserRepository {
+    return UserRepositoryRemote(
+        NetProvider.provideApiUsers(
+            NetProvider.provideRetrofit(
+                "http://jsonplaceholder.typicode.com/",
+                NetProvider.provideOkHttp(),
+                NetProvider.provideGson()
+            )
+        )
+    )
+}

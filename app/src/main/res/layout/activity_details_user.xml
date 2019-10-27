@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/userPostId"
             android:layout_width="wrap_content"
@@ -49,61 +50,73 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="E-mail: "/>
+                android:text="E-mail: " />
+
             <TextView
-            android:id="@+id/userEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="useremail@gmail.com"/>
+                android:id="@+id/userEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="useremail@gmail.com" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Website: "/>
-        <TextView
-            android:id="@+id/userWebsite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://userwebsite.com"/>
+                android:text="Website: " />
+
+            <TextView
+                android:id="@+id/userWebsite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="https://userwebsite.com" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Phone: "/>
-        <TextView
-            android:id="@+id/userPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+37529-723-39-92"/>
+                android:text="Phone: " />
+
+            <TextView
+                android:id="@+id/userPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+37529-723-39-92" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="City: "/>
-        <TextView
-            android:id="@+id/userCity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Minsk"/>
+                android:text="City: " />
+
+            <TextView
+                android:id="@+id/userCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minsk" />
         </LinearLayout>
     </LinearLayout>
 
@@ -113,4 +126,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:text="Сохранить в БД" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 </LinearLayout>

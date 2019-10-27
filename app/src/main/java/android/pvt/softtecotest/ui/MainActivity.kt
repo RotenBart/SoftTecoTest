@@ -1,5 +1,6 @@
 package android.pvt.softtecotest.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.pvt.softtecotest.R
 import android.pvt.softtecotest.entity.Post
@@ -60,6 +61,11 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener {
 
     }
     override fun onItemClick(post: Post){
+        val intent = Intent(this, UserDetailsActivity::class.java)
+        intent.putExtra("ID", post.userId)
+        Log.e("IDPOST", post.id.toString())
+        intent.putExtra("postID", post.id)
+        startActivity(intent)
         Log.e("PostClick", "Вы нажали на пост ${post.title}")
     }
 
