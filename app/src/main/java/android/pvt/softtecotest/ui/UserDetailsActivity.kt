@@ -1,5 +1,7 @@
 package android.pvt.softtecotest.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.pvt.softtecotest.R
 import android.pvt.softtecotest.entity.User
@@ -22,6 +24,8 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
     lateinit var map: GoogleMap
     var lat: Double = 0.0
     var lng: Double = 0.0
+    var email: String = ""
+    var phoneNumber: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_user)
@@ -35,6 +39,8 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
                     getUserInfo(it.user)
                     lat = it.user.address.geo.latitude.toDouble()
                     lng = it.user.address.geo.longitude.toDouble()
+                    email = it.user.email
+                    phoneNumber = it.user.phone
                     Log.e("LAT", it.user.address.geo.latitude + it.user.address.geo.longitude)
                 }
                 is MVVMState.Error -> {
@@ -46,9 +52,13 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
         mapFragment.view?.visibility = View.INVISIBLE
 
-        userEmail.setOnClickListener{
-
+        userPhone.setOnClickListener{
+            callPhone()
         }
+        userEmail.setOnClickListener{
+            sendEmail()
+        }
+
 
         userCity.setOnClickListener {
             getCityLocation()
@@ -85,5 +95,16 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
         map.addMarker(MarkerOptions().position(city))
         val camera = CameraPosition.builder().target(city).zoom(5f).build()
         map.moveCamera(CameraUpdateFactory.newCameraPosition(camera))
+    }
+
+    fun callPhone(){
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel:$phoneNumber")
+        startActivity(intent)
+    }
+    fun sendEmail(){
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("mailto: $email")
+        startActivity(intent)
     }
 }
