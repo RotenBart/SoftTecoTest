@@ -5,10 +5,10 @@ import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class PositionViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
+class PositionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var itemPosition: ImageView = itemView.findViewById(R.id.itemPosition)
 
-    fun bind(){
+    fun bind() {
         itemPosition.setImageResource(R.drawable.position_item_inactive)
     }
 

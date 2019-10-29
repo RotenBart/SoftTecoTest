@@ -11,11 +11,11 @@ import android.pvt.softtecotest.mvvm.ViewModelPosts
 import android.pvt.softtecotest.recycler.PositionAdapter
 import android.pvt.softtecotest.recycler.PostGridAdapter
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
-import android.widget.AbsListView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.view.get
@@ -34,11 +34,11 @@ import java.io.PrintWriter
 
 class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, PositionAdapter.OnClickListener {
 
-    var posts: MutableList<Post> = mutableListOf()
-    lateinit var recyclerView: RecyclerView
-    lateinit var positionRecyclerView: RecyclerView
-    lateinit var gridLayout: GridLayoutManager
-    var prevPos: Int=0
+    private var posts: MutableList<Post> = mutableListOf()
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var positionRecyclerView: RecyclerView
+    private lateinit var gridLayout: GridLayoutManager
+    private var prevPos: Int=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,7 +47,6 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
         viewModel.state.observe(this, Observer {
             when (it) {
                 is MVVMState.Data -> {
-                    Log.v("QQQ1", it.postList.toString())
                     posts.addAll(it.postList)
                     recyclerView.adapter = PostGridAdapter(it.postList, setItemWidth(), this)
                     positionRecyclerView.adapter = PositionAdapter(it.postList, this)
@@ -59,77 +58,18 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
         })
         loadImage()
         startAnimation()
-
-
-
-        recyclerView = findViewById(R.id.postRecyclerView)
-        recyclerView.setHasFixedSize(true)
-        positionRecyclerView = findViewById(R.id.positionRecyclerView)
-        positionRecyclerView.setHasFixedSize(true)
-        gridLayout = GridLayoutManager(this, 6, GridLayoutManager.HORIZONTAL, false)
-        gridLayout.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-
-            override fun getSpanSize(position: Int): Int {
-                return 3
-            }
-        }
-        recyclerView.layoutManager = gridLayout
-        positionRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.isNestedScrollingEnabled = false
-        positionRecyclerView.isNestedScrollingEnabled = false
-
-
+        initPostRecycler()
+        initPositionRecycler()
         saveLogcatButton.setOnClickListener {
-            val filePath = File(getExternalFilesDir(null), "logcat.txt")
-            val cmd = arrayOf("logcat", "-f", filePath.absolutePath.toString(), "SPIN:I", "MyApp:D", "*:S")
-            if (filePath.exists()) {
-                filePath.appendText("Test")
-                Runtime.getRuntime().exec(cmd)
-            } else {
-                filePath.createNewFile()
-                Runtime.getRuntime().exec(cmd)
-            }
-            Log.e("MainActivity", "TESTT")
-
-            //val cmd = "logcat -f" +filePath.absolutePath+ "MainActivity:I MyApp:E *:S"
-            Log.d("FILE", filePath.exists().toString())
-            Log.d("FILE", filePath.readText())
-            val pw = PrintWriter(filePath)
-            pw.close()
+            saveLogCat()
         }
-        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                val position =  gridLayout.findFirstCompletelyVisibleItemPosition()
-                if(position<6){
-                    positionRecyclerView.scrollToPosition(0)
-                    positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
-                    positionRecyclerView[0].itemPosition.setImageResource(R.drawable.position_item)
-                    prevPos = 0
-                }else {
-                    positionRecyclerView.scrollToPosition(position/6)
-                    positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
-                    positionRecyclerView[position/6].itemPosition.setImageResource(R.drawable.position_item)
-                    prevPos = position/6
-                }
-
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        } )
-
-
     }
 
     override fun onItemClick(post: Post) {
         val intent = Intent(this, UserDetailsActivity::class.java)
         intent.putExtra("ID", post.userId)
-        Log.e("IDPOST", post.id.toString())
         intent.putExtra("postID", post.id)
         startActivity(intent)
-        Log.e("PostClick", "Вы нажали на пост ${post.title}")
     }
 
     override fun onItemCLick(position: Int, v:View) {
@@ -153,30 +93,39 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
         Toast.makeText(this, "Переход к item $pos", Toast.LENGTH_SHORT).show()
     }
 
-    fun hasExternalStoragePrivateFile(): Boolean {
-        val file = File(getExternalFilesDir(null), "logcat.txt")
-        return file.exists()
-    }
-
-    fun deleteExternalStoragePrivateFile() {
-        val file = File(getExternalFilesDir(null), "logcat.txt")
-        file.delete()
-    }
-
-    fun setItemWidth(): Int {
+    private fun setItemWidth(): Int {
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
         return size.x / 3
     }
-    fun loadImage(){
+    private fun loadImage(){
         val mainImage = findViewById<ImageView>(R.id.mainImage)
         mainImage.load(R.drawable.logcat) {
             crossfade(true)
             placeholder(R.drawable.ic_android_green_36dp)
         }
+        mainImage.setOnClickListener {
+            val toast = Toast.makeText(this,"Meow!",Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
+        }
     }
-    fun startAnimation(){
+    private fun saveLogCat(){
+        val filePath = File(getExternalFilesDir(null), "logcat.txt")
+        val cmd = arrayOf("logcat", "-f", filePath.absolutePath.toString(), "SPIN:I", "MyApp:D", "*:S")
+        if (filePath.exists()) {
+            filePath.appendText("Test")
+            Runtime.getRuntime().exec(cmd)
+        } else {
+            filePath.createNewFile()
+            Runtime.getRuntime().exec(cmd)
+        }
+        Log.d("FILE", filePath.readText())
+        val pw = PrintWriter(filePath)
+        pw.close()
+    }
+    private fun startAnimation(){
         val anim = RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
         anim.interpolator = LinearInterpolator()
         anim.repeatCount = 3
@@ -201,5 +150,47 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
                 Log.e("SPIN", "Let's spin a while")
             }
         })
+    }
+    private fun scrollPositionRecycler(){
+        val position =  gridLayout.findFirstCompletelyVisibleItemPosition()
+        if(position<6){
+            positionRecyclerView.scrollToPosition(0)
+            positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
+            positionRecyclerView[0].itemPosition.setImageResource(R.drawable.position_item)
+            prevPos = 0
+        }else if(position>posts.size*6){
+            positionRecyclerView.scrollToPosition(posts.size/6+1)
+            positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
+            positionRecyclerView[posts.size/6+1].itemPosition.setImageResource(R.drawable.position_item)
+        } else {
+            positionRecyclerView.scrollToPosition(position/6)
+            positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
+            positionRecyclerView[position/6].itemPosition.setImageResource(R.drawable.position_item)
+            prevPos = position/6
+        }
+    }
+    private fun initPositionRecycler(){
+        positionRecyclerView = findViewById(R.id.positionRecyclerView)
+        positionRecyclerView.setHasFixedSize(true)
+        positionRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        positionRecyclerView.isNestedScrollingEnabled = false
+    }
+    private fun initPostRecycler(){
+        recyclerView = findViewById(R.id.postRecyclerView)
+        recyclerView.setHasFixedSize(true)
+        gridLayout = GridLayoutManager(this, 6, GridLayoutManager.HORIZONTAL, false)
+        gridLayout.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return 3
+            }
+        }
+        recyclerView.layoutManager = gridLayout
+        recyclerView.isNestedScrollingEnabled = false
+        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                scrollPositionRecycler()
+            }
+        } )
     }
 }

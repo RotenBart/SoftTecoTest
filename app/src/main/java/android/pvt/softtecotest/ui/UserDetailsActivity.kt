@@ -27,10 +27,10 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var realm: Realm
     private lateinit var user: User
-    var lat: Double = 0.0
-    var lng: Double = 0.0
-    var email: String = ""
-    var phoneNumber: String = ""
+    private var lat: Double = 0.0
+    private var lng: Double = 0.0
+    private var email: String = ""
+    private var phoneNumber: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_user)
@@ -41,8 +41,7 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
             when (it) {
                 is MVVMState.DataUser -> {
                     user = it.user
-                    Log.e("QQQ1", it.toString())
-                    getUserInfo(it.user)
+                    setUserInfo(it.user)
                     if (it.user.address != null) {
                         lat = it.user.address!!.geo!!.latitude.toDouble()
                         lng = it.user.address!!.geo!!.longitude.toDouble()
@@ -69,7 +68,7 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
         }
 
         userCity.setOnClickListener {
-            getCityLocation()
+            setCityLocation()
             mapFragment.view?.visibility = View.VISIBLE
         }
 
@@ -80,7 +79,7 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
     }
 
 
-    private fun getUserInfo(user: User) {
+    private fun setUserInfo(user: User) {
         userPostId.text = intent.getIntExtra("postID", 0).toString()
         userId.text = user.id.toString()
         userName.text = user.name
@@ -95,26 +94,26 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
         map = googleMap
     }
 
-    fun getCityLocation() {
+    private fun setCityLocation() {
         val city = LatLng(lat, lng)
         map.addMarker(MarkerOptions().position(city))
         val camera = CameraPosition.builder().target(city).zoom(5f).build()
         map.moveCamera(CameraUpdateFactory.newCameraPosition(camera))
     }
 
-    fun callPhone() {
+    private fun callPhone() {
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$phoneNumber")
         startActivity(intent)
     }
 
-    fun sendEmail() {
+    private fun sendEmail() {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto: $email")
         startActivity(intent)
     }
 
-    fun saveUser(user: User) {
+    private fun saveUser(user: User) {
         realm.executeTransaction { realm ->
             val newUser = realm.createObject<User>(user.id)
             newUser.name = user.name
@@ -126,7 +125,8 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
         }
         Toast.makeText(this, "User saved", Toast.LENGTH_SHORT).show()
     }
-    fun findFirstUser(){
+
+    private fun findFirstUser() {
         val person = realm.where<User>().findFirst()
         Log.e("USER", person?.name)
     }

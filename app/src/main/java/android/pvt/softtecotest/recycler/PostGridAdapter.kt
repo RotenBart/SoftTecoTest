@@ -6,7 +6,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class PostGridAdapter(private val postList: List<Post>, private val itemWidth: Int, private val listener: OnClickListener) :
+class PostGridAdapter(
+    private val postList: List<Post>,
+    private val itemWidth: Int,
+    private val listener: OnClickListener
+) :
     RecyclerView.Adapter<PostViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -32,5 +36,4 @@ class PostGridAdapter(private val postList: List<Post>, private val itemWidth: I
     interface OnClickListener {
         fun onItemClick(post: Post)
     }
-
 }
