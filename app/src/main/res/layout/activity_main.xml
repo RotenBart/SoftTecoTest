@@ -5,41 +5,56 @@
     android:orientation="vertical">
 
     <RelativeLayout
-            android:id="@+id/relLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="vertical"
-            android:paddingTop="20dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp">
-            <Button
-                android:id="@+id/saveLogcatButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:visibility="invisible"
-                android:text="Save LOGcat" />
+        android:id="@+id/relLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:background="@color/lightGreen"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="20dp">
+        <Button
+            android:id="@+id/saveLogcatButton"
+            style="@style/Button_green"
+            android:text="@string/save_logcat_button"
+            android:layout_alignParentEnd="true"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/mainImage"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_centerInParent="true"
-            android:contentDescription="logcat.png"
+            android:contentDescription="@string/cont_descr_logcat_png"
             android:src="@drawable/logcat" />
-        </RelativeLayout>
-
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.7"
+        android:orientation="horizontal"
+        android:background="@drawable/border">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="horizontal"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/positionRecyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"/>
+        android:padding="1dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:background="@color/mediumGreen2"
+        android:gravity="center_horizontal">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/positionRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            />
+    </LinearLayout>
+
 </LinearLayout>

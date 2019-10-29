@@ -30,6 +30,7 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
     private var lat: Double = 0.0
     private var lng: Double = 0.0
     private var email: String = ""
+    private var website: String = ""
     private var phoneNumber: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,7 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
                     }
                     email = it.user.email
                     phoneNumber = it.user.phone
+                    website = it.user.website
                 }
                 is MVVMState.Error -> {
                     Log.e("QQQEEE", "ERROR")
@@ -66,22 +68,23 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
         userEmail.setOnClickListener {
             sendEmail()
         }
-
+        userWebsite.setOnClickListener {
+            openWebsite()
+        }
         userCity.setOnClickListener {
             setCityLocation()
             mapFragment.view?.visibility = View.VISIBLE
         }
-
         userDataSave.setOnClickListener {
             saveUser(user)
         }
-
     }
 
 
     private fun setUserInfo(user: User) {
         userPostId.text = intent.getIntExtra("postID", 0).toString()
-        userId.text = user.id.toString()
+        val str = "contact #"
+        userId.text = str.plus(user.id.toString())
         userName.text = user.name
         userNick.text = user.username
         userEmail.text = user.email
@@ -110,6 +113,13 @@ class UserDetailsActivity : FragmentActivity(), OnMapReadyCallback {
     private fun sendEmail() {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto: $email")
+        startActivity(intent)
+    }
+
+    private fun openWebsite() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        val url = "http://"
+        intent.data = Uri.parse(url.plus(website))
         startActivity(intent)
     }
 

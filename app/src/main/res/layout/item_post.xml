@@ -3,17 +3,32 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_weight="0.3">
+    android:layout_weight="0.3"
+    android:background="@drawable/border">
         <TextView
             android:id="@+id/postId"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:text="11"
+            android:background="@color/lightGreen"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="1dp"
+            android:textAlignment="center"
             />
         <TextView
             android:id="@+id/postTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
             android:text="PostTitle"
+            android:background="@color/lightGreen"
+            android:textAlignment="center"
             />
 </LinearLayout>

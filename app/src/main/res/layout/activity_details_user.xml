@@ -2,29 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightGreen"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/mediumGreen">
 
         <TextView
             android:id="@+id/userId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="contact#10" />
+            android:textAlignment="center"
+            android:textColor="@color/darkGreen"
+            android:textSize="26sp"
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/mediumGreen2"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/userPostId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="11" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -32,16 +32,44 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Валерий Макс" />
+                android:layout_gravity="center"
+                android:text="@string/post"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/userPostId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/post_num_border"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+            <TextView
+                android:id="@+id/userName"
+                style="@style/UserNameText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/aka"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/userNick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Valera" />
+                style="@style/UserNameText" />
         </LinearLayout>
 
     </LinearLayout>
@@ -49,88 +77,69 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/lightGreen"
+        android:orientation="vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/UserDataLayout">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="E-mail: " />
+                style="@style/TitleDataText"
+                android:text="@string/e_mail" />
 
             <TextView
                 android:id="@+id/userEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="useremail@gmail.com" />
+                style="@style/UserDataText" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <View style="@style/Divider"/>
+        <LinearLayout style="@style/UserDataLayout">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Website: " />
+                style="@style/TitleDataText"
+                android:text="@string/website" />
 
             <TextView
                 android:id="@+id/userWebsite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="https://userwebsite.com" />
+                style="@style/UserDataText" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <View style="@style/Divider"/>
+        <LinearLayout style="@style/UserDataLayout">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phone: " />
+                style="@style/TitleDataText"
+                android:text="@string/phone" />
 
             <TextView
                 android:id="@+id/userPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+37529-723-39-92" />
+                style="@style/UserDataText" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <View style="@style/Divider"/>
+        <LinearLayout style="@style/UserDataLayout">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="City: " />
+                style="@style/TitleDataText"
+                android:text="@string/city" />
 
             <TextView
                 android:id="@+id/userCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Minsk" />
+                style="@style/UserDataText" />
         </LinearLayout>
+        <View style="@style/Divider"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/userDataSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="Сохранить в БД" />
+        style="@style/Button_green"
+        android:layout_gravity="end"
+        android:text="@string/save_to_db_button" />
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 </LinearLayout>

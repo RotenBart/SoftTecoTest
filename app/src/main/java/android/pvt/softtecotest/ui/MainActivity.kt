@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import coil.transform.CircleCropTransformation
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_position.view.*
 import java.io.File
@@ -34,6 +35,7 @@ import java.io.PrintWriter
 
 class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, PositionAdapter.OnClickListener {
 
+    val ITEMS_NUM = 6
     private var posts: MutableList<Post> = mutableListOf()
     private lateinit var recyclerView: RecyclerView
     private lateinit var positionRecyclerView: RecyclerView
@@ -76,19 +78,15 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
         positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
         prevPos = position
         v.itemPosition.setImageResource(R.drawable.position_item)
-        Log.e("POSTS", (posts.size/6).toString())
+        Log.e("POSTS", (posts.size/ITEMS_NUM).toString())
         val pos = position+1
         if (pos == 1) {
             recyclerView.scrollToPosition(pos)
-            Log.e("POSGRIDFIRST", (gridLayout.findFirstVisibleItemPosition()+1).toString())
-            Log.e("POSGRIDLAST", (gridLayout.findLastVisibleItemPosition()+1).toString())
 
-        } else if(pos>posts.size/6){
+        } else if(pos>posts.size/ITEMS_NUM){
             recyclerView.scrollToPosition(posts.size-2)
         } else {
-            recyclerView.scrollToPosition(pos*6-2)
-            Log.e("POSGRIDFIRST", (gridLayout.findFirstVisibleItemPosition()+1).toString())
-            Log.e("POSGRIDLAST", (gridLayout.findLastVisibleItemPosition()+1).toString())
+            recyclerView.scrollToPosition(pos*ITEMS_NUM-2)
         }
         Toast.makeText(this, "Переход к item $pos", Toast.LENGTH_SHORT).show()
     }
@@ -101,8 +99,9 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
     }
     private fun loadImage(){
         val mainImage = findViewById<ImageView>(R.id.mainImage)
-        mainImage.load(R.drawable.logcat) {
+        mainImage.load(R.drawable.logcat1) {
             crossfade(true)
+            transformations(CircleCropTransformation())
             placeholder(R.drawable.ic_android_green_36dp)
         }
         mainImage.setOnClickListener {
@@ -122,8 +121,9 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
             Runtime.getRuntime().exec(cmd)
         }
         Log.d("FILE", filePath.readText())
-        val pw = PrintWriter(filePath)
-        pw.close()
+        Toast.makeText(this, "LogCat saved", Toast.LENGTH_SHORT).show()
+//        val pw = PrintWriter(filePath)
+//        pw.close()
     }
     private fun startAnimation(){
         val anim = RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
@@ -153,21 +153,19 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
     }
     private fun scrollPositionRecycler(){
         val position =  gridLayout.findFirstCompletelyVisibleItemPosition()
-        if(position<6){
-            positionRecyclerView.scrollToPosition(0)
-            positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
-            positionRecyclerView[0].itemPosition.setImageResource(R.drawable.position_item)
-            prevPos = 0
-        }else if(position>posts.size*6){
-            positionRecyclerView.scrollToPosition(posts.size/6+1)
-            positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
-            positionRecyclerView[posts.size/6+1].itemPosition.setImageResource(R.drawable.position_item)
+        if(position<ITEMS_NUM){
+            setPositionIndicator(0)
+        }else if(position>posts.size*ITEMS_NUM){
+            setPositionIndicator(posts.size/ITEMS_NUM+1)
         } else {
-            positionRecyclerView.scrollToPosition(position/6)
-            positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
-            positionRecyclerView[position/6].itemPosition.setImageResource(R.drawable.position_item)
-            prevPos = position/6
+            setPositionIndicator(position/ITEMS_NUM)
         }
+    }
+    fun setPositionIndicator (position: Int){
+        positionRecyclerView.scrollToPosition(position)
+        positionRecyclerView[prevPos].itemPosition.setImageResource(R.drawable.position_item_inactive)
+        positionRecyclerView[position].itemPosition.setImageResource(R.drawable.position_item)
+        prevPos = position
     }
     private fun initPositionRecycler(){
         positionRecyclerView = findViewById(R.id.positionRecyclerView)
@@ -178,7 +176,7 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
     private fun initPostRecycler(){
         recyclerView = findViewById(R.id.postRecyclerView)
         recyclerView.setHasFixedSize(true)
-        gridLayout = GridLayoutManager(this, 6, GridLayoutManager.HORIZONTAL, false)
+        gridLayout = GridLayoutManager(this, ITEMS_NUM, GridLayoutManager.HORIZONTAL, false)
         gridLayout.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return 3

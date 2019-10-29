@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">SoftTecoTest</string>
+    <string name="save_logcat_button">Save LogCat</string>
+    <string name="cont_descr_logcat_png">logcat.png</string>
+    <string name="save_to_db_button">Save User to DB</string>
+    <string name="aka">aka</string>
+    <string name="e_mail">E-mail: </string>
+    <string name="city">City: </string>
+    <string name="phone">Phone: </string>
+    <string name="website">Website: </string>
+    <string name="post">post#</string>
 </resources>
