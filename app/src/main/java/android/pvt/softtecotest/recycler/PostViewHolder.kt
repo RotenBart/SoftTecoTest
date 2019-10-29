@@ -14,4 +14,8 @@ class PostViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
         postId.text = post.id.toString()
         postTitle.text = post.title
     }
+
+    fun setItemWidth(itemWidth: Int){
+        itemView.layoutParams = RecyclerView.LayoutParams(itemWidth,RecyclerView.LayoutParams.MATCH_PARENT)
+    }
 }
