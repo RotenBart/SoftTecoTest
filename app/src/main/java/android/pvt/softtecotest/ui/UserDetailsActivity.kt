@@ -15,30 +15,20 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_details_user.*
 
 class UserDetailsActivity : FragmentActivity() {
+    private lateinit var viewModel: ViewModelUser
     private lateinit var user: User
-    private var lat: Double? = 0.0
-    private var lng: Double? = 0.0
-    private var email: String = ""
-    private var website: String = ""
-    private var phoneNumber: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_user)
         val id = intent.getIntExtra("ID", 0)
-        val viewModel = ViewModelProviders.of(this).get(ViewModelUser::class.java)
+        viewModel = ViewModelProviders.of(this).get(ViewModelUser::class.java)
         viewModel.load(id)
         viewModel.state.observe(this, Observer {
             when (it) {
                 is MVVMState.DataUser -> {
-                    user = it.user
                     setUserInfo(it.user)
-                    if (it.user.address?.geo?.latitude != null && it.user.address?.geo?.longitude != null) {
-                        lat = it.user.address?.geo?.latitude?.toDouble()
-                        lng = it.user.address?.geo?.longitude?.toDouble()
-                    }
-                    email = it.user.email
-                    phoneNumber = it.user.phone
-                    website = it.user.website
+                    user = it.user
                 }
                 is MVVMState.Error -> {
                     Log.e("QQQEEE", "ERROR")
@@ -59,6 +49,12 @@ class UserDetailsActivity : FragmentActivity() {
         }
 
         userCity.setOnClickListener {
+            var lat: Double? = 0.0
+            var lng: Double? = 0.0
+            if (user.address?.geo?.latitude != null && user.address?.geo?.longitude != null) {
+                lat = user.address?.geo?.latitude?.toDouble()
+                lng = user.address?.geo?.longitude?.toDouble()
+            }
             val bundle = Bundle()
             lat?.let { it1 -> bundle.putDouble("lat", it1) }
             lng?.let { it1 -> bundle.putDouble("lng", it1) }
@@ -87,11 +83,13 @@ class UserDetailsActivity : FragmentActivity() {
 
     private fun callPhone() {
         val intent = Intent(Intent.ACTION_DIAL)
+        val phoneNumber = user.phone
         intent.data = Uri.parse("tel:$phoneNumber")
         startActivity(intent)
     }
 
     private fun sendEmail() {
+        val email = user.email
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto: $email")
         startActivity(intent)
@@ -99,6 +97,7 @@ class UserDetailsActivity : FragmentActivity() {
 
     private fun openWebsite() {
         val intent = Intent(Intent.ACTION_VIEW)
+        val website = user.website
         val url = "http://"
         intent.data = Uri.parse(url.plus(website))
         startActivity(intent)
