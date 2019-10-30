@@ -94,7 +94,9 @@
                 android:id="@+id/userEmail"
                 style="@style/UserDataText" />
         </LinearLayout>
-        <View style="@style/Divider"/>
+
+        <View style="@style/Divider" />
+
         <LinearLayout style="@style/UserDataLayout">
 
             <TextView
@@ -106,7 +108,8 @@
                 style="@style/UserDataText" />
         </LinearLayout>
 
-        <View style="@style/Divider"/>
+        <View style="@style/Divider" />
+
         <LinearLayout style="@style/UserDataLayout">
 
             <TextView
@@ -117,7 +120,9 @@
                 android:id="@+id/userPhone"
                 style="@style/UserDataText" />
         </LinearLayout>
-        <View style="@style/Divider"/>
+
+        <View style="@style/Divider" />
+
         <LinearLayout style="@style/UserDataLayout">
 
             <TextView
@@ -128,7 +133,8 @@
                 android:id="@+id/userCity"
                 style="@style/UserDataText" />
         </LinearLayout>
-        <View style="@style/Divider"/>
+
+        <View style="@style/Divider" />
     </LinearLayout>
 
     <Button
@@ -137,9 +143,9 @@
         android:layout_gravity="end"
         android:text="@string/save_to_db_button" />
 
-    <fragment
+    <FrameLayout
         android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp" />
 </LinearLayout>

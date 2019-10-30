@@ -11,5 +11,4 @@ class PositionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind() {
         itemPosition.setImageResource(R.drawable.position_item_inactive)
     }
-
 }
