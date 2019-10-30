@@ -3,6 +3,8 @@
 ## App requires internet connection
 ### libs: Okhttp, Gson, Retrofit2, RxJava2, Coil
 ### DB: Realm
-![photo_2019-10-30_13-52-00](https://user-images.githubusercontent.com/51793674/67852743-0b60e180-fb1e-11e9-99c7-0bd05e923cb0.jpg)
-![photo_2019-10-30_13-51-54](https://user-images.githubusercontent.com/51793674/67852744-0b60e180-fb1e-11e9-9a4f-c0b7c7acbc91.jpg)
-![photo_2019-10-30_13-52-13](https://user-images.githubusercontent.com/51793674/67852742-0ac84b00-fb1e-11e9-85a4-0b475017d0da.jpg)
+
+![photo_2019-10-30_17-05-21](https://user-images.githubusercontent.com/51793674/67864921-7965d280-fb37-11e9-978a-212b8cbae743.jpg)
+![photo_2019-10-30_17-02-29](https://user-images.githubusercontent.com/51793674/67864697-1116f100-fb37-11e9-842e-65a8b4221cd8.jpg)
+![photo_2019-10-30_17-02-25](https://user-images.githubusercontent.com/51793674/67864698-1116f100-fb37-11e9-84b3-6d94f0a2b86f.jpg)
+
