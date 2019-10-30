@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_position.view.*
 
-class PositionAdapter(private val postlist: List<Post>, private val listener: OnClickListener) :
+class PositionAdapter(private val listener: OnClickListener) :
     RecyclerView.Adapter<PositionViewHolder>() {
+
+    private var postlist: List<Post> = emptyList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PositionViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_position, parent, false)
         val holder = PositionViewHolder(view)
@@ -20,6 +23,11 @@ class PositionAdapter(private val postlist: List<Post>, private val listener: On
             Log.e("POSAD", holder.adapterPosition.toString())
         }
         return holder
+    }
+
+    fun setPostList(postlist: List<Post>) {
+        this.postlist = postlist
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

@@ -30,28 +30,32 @@ import coil.transform.CircleCropTransformation
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_position.view.*
 import java.io.File
-import java.io.PrintWriter
 
 
 class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, PositionAdapter.OnClickListener {
 
     private val ITEMS_NUM = 6
     private var posts: MutableList<Post> = mutableListOf()
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var postRecyclerView: RecyclerView
     private lateinit var positionRecyclerView: RecyclerView
     private lateinit var gridLayout: GridLayoutManager
     private var prevPos: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val positionAdapter = PositionAdapter(this)
+        val postAdapter = PostGridAdapter(setItemWidth(), this)
 
         val viewModel = ViewModelProviders.of(this).get(ViewModelPosts::class.java)
         viewModel.state.observe(this, Observer {
             when (it) {
                 is MVVMState.Data -> {
                     posts.addAll(it.postList)
-                    recyclerView.adapter = PostGridAdapter(it.postList, setItemWidth(), this)
-                    positionRecyclerView.adapter = PositionAdapter(it.postList, this)
+                    positionAdapter.setPostList(it.postList)
+                    postAdapter.setPostList(it.postList)
                 }
                 is MVVMState.Error -> {
                     Log.e("QQQEEE", "ERROR")
@@ -60,8 +64,8 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
         })
         loadImage()
         startAnimation()
-        initPostRecycler()
-        initPositionRecycler()
+        initPostRecycler(postAdapter)
+        initPositionRecycler(positionAdapter)
         saveLogcatButton.setOnClickListener {
             saveLogCat()
         }
@@ -81,9 +85,9 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
         Log.e("POSTS", (posts.size / ITEMS_NUM).toString())
         val pos = position + 1
         when {
-            pos == 1 -> recyclerView.scrollToPosition(pos)
-            pos > posts.size / ITEMS_NUM -> recyclerView.scrollToPosition(posts.size - 2)
-            else -> recyclerView.scrollToPosition(pos * ITEMS_NUM - 2)
+            pos == 1 -> postRecyclerView.scrollToPosition(pos)
+            pos > posts.size / ITEMS_NUM -> postRecyclerView.scrollToPosition(posts.size - 2)
+            else -> postRecyclerView.scrollToPosition(pos * ITEMS_NUM - 2)
         }
     }
 
@@ -167,25 +171,27 @@ class MainActivity : FragmentActivity(), PostGridAdapter.OnClickListener, Positi
         prevPos = position
     }
 
-    private fun initPositionRecycler() {
+    private fun initPositionRecycler(adapter: PositionAdapter) {
         positionRecyclerView = findViewById(R.id.positionRecyclerView)
+        positionRecyclerView.adapter = adapter
         positionRecyclerView.setHasFixedSize(true)
         positionRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         positionRecyclerView.isNestedScrollingEnabled = false
     }
 
-    private fun initPostRecycler() {
-        recyclerView = findViewById(R.id.postRecyclerView)
-        recyclerView.setHasFixedSize(true)
+    private fun initPostRecycler(adapter: PostGridAdapter) {
+        postRecyclerView = findViewById(R.id.postRecyclerView)
+        postRecyclerView.adapter = adapter
+        postRecyclerView.setHasFixedSize(true)
         gridLayout = GridLayoutManager(this, ITEMS_NUM, GridLayoutManager.HORIZONTAL, false)
         gridLayout.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return 3
             }
         }
-        recyclerView.layoutManager = gridLayout
-        recyclerView.isNestedScrollingEnabled = false
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        postRecyclerView.layoutManager = gridLayout
+        postRecyclerView.isNestedScrollingEnabled = false
+        postRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 scrollPositionRecycler()
