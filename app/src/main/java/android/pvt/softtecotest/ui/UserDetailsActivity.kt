@@ -9,12 +9,12 @@ import android.pvt.softtecotest.mvvm.MVVMState
 import android.pvt.softtecotest.mvvm.ViewModelUser
 import android.util.Log
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_details_user.*
 
-class UserDetailsActivity : FragmentActivity() {
+class UserDetailsActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModelUser
     private lateinit var user: User
 
@@ -29,6 +29,7 @@ class UserDetailsActivity : FragmentActivity() {
                 is MVVMState.DataUser -> {
                     setUserInfo(it.user)
                     user = it.user
+                    setToolbar(it.user.id)
                 }
                 is MVVMState.Error -> {
                     Log.e("QQQEEE", "ERROR")
@@ -69,10 +70,19 @@ class UserDetailsActivity : FragmentActivity() {
         }
     }
 
+    private fun setToolbar(id: Int) {
+        val str = "contact #"
+        setSupportActionBar(toolBar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        toolBar.title = str.plus(id.toString())
+        toolBar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+    }
+
     private fun setUserInfo(user: User) {
         userPostId.text = intent.getIntExtra("postID", 0).toString()
-        val str = "contact #"
-        userId.text = str.plus(user.id.toString())
         userName.text = user.name
         userNick.text = user.username
         userEmail.text = user.email
