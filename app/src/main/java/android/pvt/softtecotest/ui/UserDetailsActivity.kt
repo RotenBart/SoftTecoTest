@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_details_user.*
 
 class UserDetailsActivity : AppCompatActivity() {
+
     private lateinit var viewModel: ViewModelUser
     private lateinit var user: User
 

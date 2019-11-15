@@ -3,7 +3,7 @@ package android.pvt.softtecotest.app
 import android.app.Application
 import io.realm.Realm
 
-class MyApp : Application(){
+class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
