@@ -1,6 +1,5 @@
 package android.pvt.softtecotest.mvvm
 
-
 import android.pvt.softtecotest.repository.providePostRepository
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,6 +28,7 @@ class ViewModelPosts : ViewModel() {
                     state.value = MVVMState.Data(data)
                 }
     }
+
     override fun onCleared() {
         disposable?.dispose()
     }

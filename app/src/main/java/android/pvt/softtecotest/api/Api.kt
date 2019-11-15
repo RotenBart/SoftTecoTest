@@ -8,13 +8,12 @@ import retrofit2.http.Path
 
 interface Api {
     @GET("posts")
-    fun getPosts(
-    ): Single<List<Post>>
+    fun getPosts(): Single<List<Post>>
 }
 
 interface ApiUsers {
     @GET("users/{id}")
-    fun getUser (
-        @Path("id") id:Int
+    fun getUser(
+        @Path("id") id: Int
     ): Single<User>
 }

@@ -5,7 +5,7 @@ import android.pvt.softtecotest.entity.User
 import io.reactivex.Single
 
 class UserRepositoryRemote(private val api: ApiUsers) : UserRepository {
-    override fun getUser(id:Int): Single<User> {
+    override fun getUser(id: Int): Single<User> {
         return api.getUser(id)
     }
 }

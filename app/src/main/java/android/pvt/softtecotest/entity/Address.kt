@@ -3,7 +3,7 @@ package android.pvt.softtecotest.entity
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 
-open class Address:RealmObject(){
+open class Address : RealmObject() {
     @SerializedName("street")
     open var street: String = ""
     @SerializedName("suite")
